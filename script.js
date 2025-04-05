@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
-    const voiceButton = document.getElementById('voice-button');
 
     // Function to add a message to the chat
     function addMessage(text, isUser = false) {
@@ -71,11 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') {
             sendButton.click();
         }
-    });
-
-    // Handle voice button click (placeholder for voice input functionality)
-    voiceButton.addEventListener('click', () => {
-        alert('Voice input functionality will be implemented here');
     });
 
     // Make suggestion items clickable
