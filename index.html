@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiloKōkua – The Hawaiʻi Climate AI Concierge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <svg viewBox="0 0 100 100" class="wave-logo">
+                        <path d="M20,50 Q35,30 50,50 T80,50" stroke="#2C5F9C" fill="none" stroke-width="3"/>
+                        <circle cx="50" cy="50" r="5" fill="#2C5F9C"/>
+                    </svg>
+                </div>
+                <div class="title-container">
+                    <h1>KiloKōkua</h1>
+                    <span class="subtitle">The Hawaiʻi Climate AI Concierge</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-message">
+                    <p>Aloha! I'm KiloKōkua, your AI guide to Hawaiʻi's climate. Ask me about weather patterns, climate data, or environmental changes across the islands.</p>
+                    <div class="suggestions">
+                        <p>Try asking:</p>
+                        <ul>
+                            <li>What's the average rainfall on the Big Island in February?</li>
+                            <li>How has sea level changed in Honolulu over the past decade?</li>
+                            <li>What are the current climate trends in Maui?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="user-input" placeholder="Ask me about Hawaiʻi's climate..." />
+                    <button id="voice-button" class="icon-button">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button id="send-button" class="icon-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    <span>Powered by AI</span>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
