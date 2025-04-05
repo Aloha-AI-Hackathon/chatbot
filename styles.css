@@ -175,11 +175,30 @@ input[type="text"]:focus {
 }
 
 /* Message styling */
-.message {
+.message-container {
     margin: 1rem 0;
+    max-width: 80%;
+}
+
+.message-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+    padding-left: 0.5rem;
+}
+
+.user-message-container {
+    margin-left: auto;
+}
+
+.bot-message-container {
+    margin-right: auto;
+}
+
+.message {
     padding: 1rem;
     border-radius: 15px;
-    max-width: 80%;
 }
 
 .user-message {
