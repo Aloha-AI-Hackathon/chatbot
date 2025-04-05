@@ -20,116 +20,148 @@ body {
     background: linear-gradient(135deg, var(--sand) 0%, var(--white) 100%);
     min-height: 100vh;
     color: var(--text-dark);
+    display: flex;
+    align-items: center;
 }
 
 .app-container {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 1000px;
+    margin: 5rem auto;
     padding: 2rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-header {
-    margin-bottom: 0.5rem;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-.logo {
-    width: 180px;
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.wave-logo {
+    min-height: auto;
+    position: relative;
+    padding-top: 5rem;
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.title-container {
-    display: flex;
-    flex-direction: column;
-}
-
-h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--ocean-blue);
-    margin: 0;
-}
-
-.subtitle {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    margin-top: 0.25rem;
 }
 
 .chat-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
     background: var(--white);
     border-radius: 20px;
+    padding: 5rem 2.5rem 2.5rem;
+    position: relative;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Avatar and Header Styling */
+.bot-avatar {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: var(--sand);
+    padding: 5px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bot-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: contain;
+    background: white;
+}
+
+.bot-name {
+    color: var(--ocean-blue);
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
 }
 
 .chat-messages {
     flex: 1;
-    padding: 2rem;
+    padding: 1rem 1.5rem;
     overflow-y: auto;
-    background: linear-gradient(to bottom, rgba(74, 144, 226, 0.05), transparent);
+    background: var(--white);
+    scrollbar-width: thin;
+    scrollbar-color: var(--light-blue) transparent;
+}
+
+/* Webkit scrollbar styling */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: var(--light-blue);
+    border-radius: 3px;
 }
 
 .welcome-message {
-    background: var(--white);
+    background: rgba(74, 144, 226, 0.05);
     padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    box-shadow: none;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(74, 144, 226, 0.1);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.welcome-message p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-dark);
     margin-bottom: 1rem;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .suggestions {
     margin-top: 1.5rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .suggestions p {
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
 }
 
 .suggestions ul {
     list-style: none;
-    padding-left: 1rem;
+    padding-left: 0;
+    width: 100%;
 }
 
 .suggestions li {
     margin: 0.5rem 0;
     color: var(--ocean-blue);
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.2s;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    background: rgba(74, 144, 226, 0.05);
+    border: 1px solid rgba(74, 144, 226, 0.1);
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .suggestions li:hover {
-    color: var(--light-blue);
+    background: rgba(74, 144, 226, 0.1);
+    transform: translateY(-1px);
 }
 
 .input-container {
     padding: 1.5rem;
     background: var(--white);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    margin-top: auto;
 }
 
 .input-wrapper {
@@ -179,40 +211,53 @@ input[type="text"]:focus {
 /* Message styling */
 .message-container {
     margin: 1rem 0;
-    max-width: 80%;
+    max-width: 85%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .message-label {
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    padding: 0 0.5rem;
     color: var(--text-light);
-    margin-bottom: 0.25rem;
-    padding-left: 0.5rem;
+    font-weight: 500;
 }
 
 .user-message-container {
+    align-items: flex-end;
     margin-left: auto;
 }
 
+.user-message-container .message-label {
+    color: var(--ocean-blue);
+}
+
 .bot-message-container {
-    margin-right: auto;
+    align-items: flex-start;
 }
 
 .message {
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     border-radius: 15px;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 .user-message {
     background: var(--ocean-blue);
     color: var(--white);
     margin-left: auto;
+    border-bottom-right-radius: 5px;
 }
 
 .bot-message {
-    background: var(--sand);
+    background: rgba(74, 144, 226, 0.05);
     color: var(--text-dark);
     margin-right: auto;
+    border-bottom-left-radius: 5px;
+    border: 1px solid rgba(74, 144, 226, 0.1);
 }
 
 /* Loading animation */
