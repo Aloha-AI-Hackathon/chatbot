@@ -39,6 +39,7 @@ header {
     display: flex;
     align-items: center;
     gap: 2rem;
+    padding-top: 2rem;
 }
 
 .logo {
@@ -59,6 +60,8 @@ header {
 .title-container {
     display: flex;
     flex-direction: column;
+    margin-top: 2rem;
+    padding-bottom: 1rem;
 }
 
 h1 {
