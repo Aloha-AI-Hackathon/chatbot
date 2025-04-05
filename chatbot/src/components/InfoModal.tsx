@@ -64,9 +64,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
                     
                     <h4 className="text-hawaii-blue font-medium mt-4">Additional Resources</h4>
                     <ul className="list-disc pl-5 space-y-1">
-                      <li><a href="#" className="text-hawaii-teal hover:underline">Hawaii Climate Change Portal</a></li>
-                      <li><a href="#" className="text-hawaii-teal hover:underline">NOAA Climate Data</a></li>
-                      <li><a href="#" className="text-hawaii-teal hover:underline">UH Sea Level Center</a></li>
+                      <li><a href="https://climate.hawaii.gov/" className="text-hawaii-teal hover:underline">Hawaii Climate Change Portal</a></li>
+                      <li><a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/regional/mapping" className="text-hawaii-teal hover:underline">NOAA Climate Data</a></li>
+                      <li><a href="https://uhslc.soest.hawaii.edu/" className="text-hawaii-teal hover:underline">UH Sea Level Center</a></li>
                     </ul>
                   </div>
                 </div>

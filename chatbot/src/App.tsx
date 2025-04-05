@@ -59,64 +59,88 @@ function App() {
 
   // Toggle dark mode
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    if (!darkMode) {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    console.log("Dark mode toggled:", newDarkMode);
+    
+    if (newDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+    
+    // Force re-render
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
   };
+
+  // Debug info - remove in production
+  useEffect(() => {
+    console.log("Current dark mode state:", darkMode);
+    console.log("Dark class on HTML:", document.documentElement.classList.contains('dark'));
+  }, [darkMode]);
 
   return (
     <div className={`min-h-screen flex flex-col transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-hawaii-blue/20 via-white to-hawaii-teal/20 text-gray-800'}`}>
       {/* Header */}
       <header className="py-4 px-4 sm:px-6 bg-white/90 dark:bg-gray-800/90 shadow-md backdrop-blur-sm sticky top-0 z-10 transition-colors duration-300">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col items-center justify-center text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-hawaii-teal transition-colors duration-300">
-              KiloKōkua – The Hawaiʻi Climate AI Concierge
-            </h1>
-            <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-300 transition-colors duration-300">
-              Your personal guide for climate information in the Hawaiian Islands
-            </p>
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-6 items-center">
+            {/* Left side - Info button */}
+            <div className="col-span-1 flex justify-start">
+              <button 
+                onClick={() => setInfoModalOpen(true)}
+                className="px-2 py-1 rounded-lg bg-hawaii-blue dark:bg-hawaii-coral text-white dark:text-gray-800 hover:bg-hawaii-blue/80 dark:hover:bg-hawaii-coral/80 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-hawaii-teal shadow-md flex items-center space-x-1"
+                aria-label="Weather data info"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-xs font-medium">Info</span>
+              </button>
+            </div>
+            
+            {/* Center - Title */}
+            <div className="col-span-4 flex flex-col items-center justify-center text-center px-4">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-hawaii-teal transition-colors duration-300">
+                KiloKōkua
+              </h1>
+              <p className="mt-1 text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 transition-colors duration-300">
+                The Hawaiʻi Climate AI Concierge
+              </p>
+            </div>
+            
+            {/* Right side - Dark mode toggle */}
+            <div className="col-span-1 flex justify-end">
+              <div className="flex items-center">
+                <span className="mr-1 text-gray-600 dark:text-gray-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                </span>
+                <label className="inline-flex relative items-center cursor-pointer mx-1">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only peer" 
+                    checked={darkMode}
+                    onChange={toggleDarkMode}
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-hawaii-teal rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-hawaii-teal"></div>
+                </label>
+                <span className="ml-1 text-gray-600 dark:text-gray-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Info button */}
-      <div className="absolute top-4 left-4">
-        <button 
-          onClick={() => setInfoModalOpen(true)}
-          className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-hawaii-teal"
-          aria-label="Weather data info"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Dark mode toggle */}
-      <div className="absolute top-4 right-4">
-        <button 
-          onClick={toggleDarkMode}
-          className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-hawaii-teal"
-          aria-label="Toggle dark mode"
-        >
-          {darkMode ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-          )}
-        </button>
-      </div>
-
       {/* Main chat area */}
-      <main className="flex-1 overflow-hidden flex flex-col max-w-4xl w-full mx-auto px-4 py-4">
+      <main className="flex-1 overflow-hidden flex flex-col max-w-5xl w-full mx-auto px-4 py-4">
         {/* Messages container */}
         <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2">
           {messages.map((message) => (
@@ -181,7 +205,9 @@ function App() {
 
       {/* Footer */}
       <footer className="py-3 px-4 text-center text-sm text-gray-600 dark:text-gray-400 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-300">
-        <p>© 2023 KiloKōkua - The Hawaiʻi Climate AI Concierge</p>
+        <div className="max-w-5xl mx-auto">
+          <p>© 2025 KiloKōkua - The Hawaiʻi Climate AI Concierge</p>
+        </div>
       </footer>
 
       {/* Info Modal */}
