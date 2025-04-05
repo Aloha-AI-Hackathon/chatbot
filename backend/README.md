@@ -4,7 +4,7 @@ This is the backend API for the KiloKōkua chatbot, which provides information a
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.10+ (recommended Python 3.10 or 3.11; Python 3.13 may have compatibility issues)
 - Google Cloud account with Vertex AI API enabled
 - Google Cloud SDK installed and configured
 
@@ -17,6 +17,9 @@ cd backend
 
 2. Create a virtual environment:
 ```bash
+# If using Python 3.13, specify Python 3.10 or 3.11 if available:
+python3.10 -m venv venv
+# Or
 python -m venv venv
 ```
 
@@ -50,6 +53,22 @@ gcloud auth application-default login
 # Make sure you're authenticated with the correct project
 gcloud config set project YOUR_PROJECT_ID
 ```
+
+## Troubleshooting
+
+### Python Version Issues
+If you encounter errors related to incompatible Python versions:
+- Try using Python 3.10 or 3.11 instead of newer versions
+- If you must use Python 3.13+, you may need to update the dependencies manually:
+  ```bash
+  pip install --upgrade fastapi pydantic uvicorn
+  ```
+
+### Rust/Cargo Requirements
+Some dependencies may require Rust and Cargo to be installed:
+- Install Rust via https://rustup.rs/
+- Add Rust to your PATH
+- Or try installing binary wheels: `pip install --only-binary=:all: -r requirements.txt`
 
 ## Running the API
 
