@@ -3,47 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KiloKōkua</title>
-    <!-- Favicons for all sizes and high-resolution displays -->
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon.png?v=2">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png?v=2">
-    <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png?v=2">
-    <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png?v=2">
-    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon.png?v=2">
-    <link rel="icon" type="image/png" sizes="128x128" href="assets/favicon.png?v=2">
-    <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png?v=2">
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png?v=2">
-    <link rel="apple-touch-icon" sizes="192x192" href="assets/favicon.png?v=2">
-    <link rel="apple-touch-icon" sizes="512x512" href="assets/favicon.png?v=2">
-    <!-- Microsoft Tile -->
-    <meta name="msapplication-TileImage" content="assets/favicon.png?v=2">
-    <meta name="msapplication-TileColor" content="#2C5F9C">
-    <!-- Safari Pinned Tab -->
-    <link rel="mask-icon" href="assets/favicon.png?v=2" color="#2C5F9C">
-    <!-- Browser Theme Color -->
-    <meta name="theme-color" content="#2C5F9C">
-    <!-- Primary Favicon -->
-    <link rel="shortcut icon" href="assets/favicon.png?v=2">
+    <title>KiloKōkua – The Hawaiʻi Climate AI Concierge</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
-        <header>
-            <div class="logo-container">
-                <div class="logo">
-                    <img src="assets/hawaii-weather-logo.png" alt="Hawaii Weather Chatbot Logo" class="wave-logo">
-                </div>
-                <div class="title-container">
-                    <h1>KiloKōkua</h1>
-                    <span class="subtitle">The Hawaiʻi Weather AI Chatbot</span>
-                </div>
+        <div class="chat-container">
+            <div class="bot-avatar">
+                <img src="assets/hawaii-weather-logo.png" alt="KiloKōkua Avatar">
             </div>
-        </header>
+            
+            <div class="bot-name">KiloKōkua</div>
 
-        <main class="chat-container">
             <div class="chat-messages" id="chat-messages">
                 <div class="welcome-message">
                     <p>Aloha! I'm KiloKōkua, your AI guide to Hawaiʻi's climate. Ask me about weather patterns, climate data, or environmental changes across the islands.</p>
@@ -69,7 +43,7 @@
                     <span>Powered by AI</span>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

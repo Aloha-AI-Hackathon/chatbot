@@ -7,17 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMessage(text, isUser = false) {
         const messageContainer = document.createElement('div');
         messageContainer.className = `message-container ${isUser ? 'user-message-container' : 'bot-message-container'}`;
-        
+
+        // Add the label
         const label = document.createElement('div');
         label.className = 'message-label';
         label.textContent = isUser ? 'You' : 'KiloKōkua';
-        
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-        messageDiv.textContent = text;
-        
         messageContainer.appendChild(label);
-        messageContainer.appendChild(messageDiv);
+
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+        messageElement.textContent = text;
+
+        messageContainer.appendChild(messageElement);
         chatMessages.appendChild(messageContainer);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
@@ -47,28 +48,30 @@ document.addEventListener('DOMContentLoaded', () => {
         thinkingContainer.remove();
     }
 
-    // Handle send button click
-    sendButton.addEventListener('click', () => {
-        const message = userInput.value.trim();
-        if (message) {
-            addMessage(message, true);
+    function handleUserInput() {
+        const text = userInput.value.trim();
+        if (text) {
+            addMessage(text, true);
             userInput.value = '';
-
+            
             // Show thinking animation
             const thinkingContainer = showThinking();
-
-            // Simulate bot response (replace with actual API call)
+            
+            // Simulate bot response
             setTimeout(() => {
                 removeThinking(thinkingContainer);
-                addMessage("I'm processing your question about Hawaiʻi's climate. This is a placeholder response.");
-            }, 1500);
+                addMessage("I'm processing your request about Hawaii's climate...");
+            }, 1000);
         }
-    });
+    }
+
+    // Handle send button click
+    sendButton.addEventListener('click', handleUserInput);
 
     // Handle enter key press
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            sendButton.click();
+            handleUserInput();
         }
     });
 
