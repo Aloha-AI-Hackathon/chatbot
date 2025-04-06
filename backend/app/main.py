@@ -9,6 +9,9 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 
+# Import configuration first
+from .config import CORS_ORIGINS, LOG_LEVEL
+
 # Configure logging
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL),
@@ -16,8 +19,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("kilokokua-backend")
 
-# Import configuration, database and models
-from .config import CORS_ORIGINS, LOG_LEVEL
+# Import database and models
 from .database import engine, get_db, Base
 from . import models, auth, chat
 from .auth import Token, User, UserCreate, get_current_user, get_current_user_optional, get_current_active_user
