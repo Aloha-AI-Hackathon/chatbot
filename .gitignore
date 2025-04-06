@@ -4,6 +4,28 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.python-version
+venv/
+env/
+ENV/
+
+# Node
 venv/
 ENV/
 .env
@@ -18,6 +40,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# IDE
 # Build folders
 /build/
 /dist/
@@ -29,6 +52,34 @@ yarn-error.log*
 *.swp
 *.swo
 .DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Build
+dist/
+build/
+out/
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log 
 *.sublime-workspace
 
 # Environment files
