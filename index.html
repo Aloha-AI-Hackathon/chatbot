@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiloKōkua – The Hawaiʻi Climate AI Concierge</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="chat-container">
+            <div class="bot-avatar">
+                <img src="assets/hawaii-weather-logo.png" alt="KiloKōkua Avatar">
+            </div>
+
+            <div class="bot-name">KiloKōkua</div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-message">
+                    <p>Aloha! I'm KiloKōkua, your AI guide to Hawaiʻi's climate. Ask me about weather patterns, climate
+                        data, or environmental changes across the islands.</p>
+                    <div class="suggestions">
+                        <p>Try asking:</p>
+                        <ul>
+                            <li>What's the average rainfall on the Big Island in February?</li>
+                            <li>How has sea level changed in Honolulu over the past decade?</li>
+                            <li>What are the current climate trends in Maui?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="user-input" placeholder="Ask me about Hawaiʻi's climate..." />
+                    <button id="send-button" class="icon-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="powered-by">
+                    <span>Powered by AI</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <link rel="stylesheet"
+        href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+    <df-messenger location="us-west1" project-id="alohadata-team1" agent-id="2560e423-8c8c-4c4f-8abf-a009a87ef8d4"
+        language-code="en" max-query-length="-1">
+        <df-messenger-chat-bubble chat-title="Hawaii Climate Bot">
+        </df-messenger-chat-bubble>
+    </df-messenger>
+    <style>
+        df-messenger {
+            z-index: 999;
+            position: fixed;
+            --df-messenger-font-color: #000;
+            --df-messenger-font-family: Google Sans;
+            --df-messenger-chat-background: #f3f6fc;
+            --df-messenger-message-user-background: #d3e3fd;
+            --df-messenger-message-bot-background: #fff;
+            bottom: 16px;
+            right: 16px;
+        }
+    </style>
+</body>
+
+</html>
