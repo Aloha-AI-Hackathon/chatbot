@@ -4,11 +4,31 @@ This is the backend API for the KiloKōkua chatbot, which provides information a
 
 ## Requirements
 
-- Python 3.10+ (recommended Python 3.10 or 3.11; Python 3.13 may have compatibility issues)
+- Python 3.8+ (recommended Python 3.10 or 3.11; Python 3.13 may have compatibility issues)
 - Google Cloud account with Vertex AI API enabled
 - Google Cloud SDK installed and configured
 
-## Setup
+## Quick Setup (Windows)
+
+1. Run the installation script:
+```bash
+install_windows.bat
+```
+
+2. Edit the `.env` file with your Google Cloud project details.
+
+3. Set up Google Cloud authentication:
+```bash
+gcloud auth application-default login
+gcloud config set project YOUR_PROJECT_ID
+```
+
+4. Start the server:
+```bash
+python run.py
+```
+
+## Manual Setup
 
 1. Clone the repository and navigate to the backend directory:
 ```bash
@@ -33,10 +53,17 @@ python -m venv venv
    source venv/bin/activate
    ```
 
-4. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+4. Install dependencies (two options):
+   
+   a. Install via setup.py (recommended):
+   ```bash
+   pip install -e .
+   ```
+   
+   b. Install via requirements.txt:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 5. Create a `.env` file from the example:
 ```bash
@@ -56,6 +83,15 @@ gcloud config set project YOUR_PROJECT_ID
 
 ## Troubleshooting
 
+### Module Import Errors
+If you see errors like `ModuleNotFoundError: No module named 'vertexai.generative_models'`, it's likely due to:
+
+1. Using an older version of the `google-cloud-aiplatform` package
+   - Update using: `pip install --upgrade google-cloud-aiplatform>=1.38.0`
+
+2. Incomplete installation of dependencies
+   - Try reinstalling: `pip install -e . --no-build-isolation`
+
 ### Python Version Issues
 If you encounter errors related to incompatible Python versions:
 - Try using Python 3.10 or 3.11 instead of newer versions
@@ -65,10 +101,16 @@ If you encounter errors related to incompatible Python versions:
   ```
 
 ### Rust/Cargo Requirements
-Some dependencies may require Rust and Cargo to be installed:
+Some dependencies (particularly pydantic) may require Rust and Cargo to be installed:
 - Install Rust via https://rustup.rs/
 - Add Rust to your PATH
 - Or try installing binary wheels: `pip install --only-binary=:all: -r requirements.txt`
+
+### Google Cloud Authentication Issues
+If you see errors about missing authentication:
+1. Ensure you've run `gcloud auth application-default login`
+2. Verify your PROJECT_ID and LOCATION in the .env file
+3. Check that you have the Vertex AI API enabled in your Google Cloud project
 
 ## Running the API
 
@@ -96,4 +138,5 @@ The server runs with auto-reload enabled, so any changes to the code will automa
 - `PROJECT_ID`: Your Google Cloud project ID
 - `LOCATION`: Google Cloud region where Vertex AI is enabled (e.g., us-central1)
 - `PORT`: Port for the FastAPI server (default: 8000)
-- `LOG_LEVEL`: Logging level (default: INFO) 
+- `LOG_LEVEL`: Logging level (default: INFO)
+- `APP_MODULE`: Module path to the FastAPI app (default: "app.main:app") 
