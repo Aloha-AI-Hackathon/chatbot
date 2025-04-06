@@ -5,16 +5,19 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import './AuthPages.css';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 const AppRouter: React.FC = () => {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/" element={<App />} />
-        </Routes>
+        <ThemeProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/" element={<App />} />
+          </Routes>
+        </ThemeProvider>
       </AuthProvider>
     </Router>
   );

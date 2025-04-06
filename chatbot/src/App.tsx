@@ -4,9 +4,13 @@ import './components/Chat.css';
 import './App.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { useTheme } from './context/ThemeContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = () => {
     logout();
@@ -14,6 +18,11 @@ function App() {
 
   return (
     <div className="App">
+      <div className="theme-toggle">
+        <button onClick={toggleTheme} className="theme-button">
+          <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
+        </button>
+      </div>
       <div className="auth-buttons">
         {user ? (
           <>

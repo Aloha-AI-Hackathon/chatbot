@@ -14,7 +14,7 @@
 
 body {
     font-family: 'Quicksand', sans-serif;
-    background: #FDF4E7;
+    background: var(--bg-color);
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -22,6 +22,7 @@ body {
     align-items: center;
     justify-content: center;
     min-width: 100vw;
+    color: var(--text-color);
 }
 
 .app-container {
@@ -55,7 +56,7 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: var(--ocean-blue);
+    background-color: var(--primary-color);
     color: white;
     display: flex;
     align-items: center;
@@ -66,7 +67,7 @@ body {
 }
 
 .sidebar-toggle:hover {
-    background-color: #1f4c7e;
+    background-color: var(--primary-hover-color);
     transform: scale(1.05);
 }
 
@@ -96,18 +97,18 @@ body {
 }
 
 .chat-container {
-    background: var(--white);
+    background: var(--app-bg-color);
     border-radius: 24px;
     padding: 3.5rem 3.5rem 3rem;
     position: relative;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     height: 700px;
     width: 800px;
     display: flex;
     flex-direction: column;
     flex: 1;
     margin: 0 auto;
-    border: 4px solid #FDF4E7;
+    border: 4px solid var(--bg-color);
 }
 
 .bot-avatar {
@@ -118,11 +119,11 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: var(--white);
+    background: var(--app-bg-color);
     padding: 8px;
     z-index: 2;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    border: 4px solid #FDF4E7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 4px solid var(--bg-color);
 }
 
 .bot-avatar img {
@@ -134,14 +135,14 @@ body {
 }
 
 .bot-name {
-    color: var(--ocean-blue);
+    color: var(--primary-color);
     font-size: 2rem;
     font-weight: 600;
     text-align: center;
     margin-top: 0.75rem;
     margin-bottom: 1.25rem;
     padding-bottom: 1.25rem;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid var(--border-color);
     letter-spacing: 0.5px;
     position: relative;
 }
@@ -226,12 +227,13 @@ body {
 }
 
 .chat-messages::-webkit-scrollbar-thumb {
-    background-color: #E2E8F0;
+    background-color: var(--border-color);
     border-radius: 3px;
 }
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
-    background-color: #CBD5E0;
+    background-color: var(--primary-color);
+    opacity: 0.7;
 }
 
 .message-container {
@@ -240,7 +242,7 @@ body {
 
 .message-label {
     font-size: 0.8rem;
-    color: var(--text-light);
+    color: var(--text-light-color);
     margin-bottom: 0.25rem;
 }
 
@@ -261,8 +263,8 @@ body {
 }
 
 .user-message {
-    background: var(--ocean-blue);
-    color: var(--white);
+    background: var(--primary-color);
+    color: white;
 }
 
 .bot-message-container {
@@ -272,15 +274,15 @@ body {
 }
 
 .bot-message {
-    background: #F7FAFF;
-    color: var(--text-dark);
+    background: var(--message-bg-color);
+    color: var(--text-color);
 }
 
 .thinking {
     display: flex;
     gap: 0.25rem;
     padding: 1rem;
-    background: #F7FAFF;
+    background: var(--message-bg-color);
     border-radius: 8px;
 }
 
@@ -288,7 +290,7 @@ body {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--ocean-blue);
+    background: var(--primary-color);
     opacity: 0.4;
     animation: thinking 1.4s infinite;
 }
@@ -313,7 +315,7 @@ body {
 }
 
 .welcome-message {
-    background: #F7FAFF;
+    background: var(--message-bg-color);
     padding: 1.75rem;
     border-radius: 12px;
     margin-bottom: 0;
@@ -326,7 +328,7 @@ body {
 .welcome-message p {
     font-size: 0.95rem;
     line-height: 1.6;
-    color: var(--text-dark);
+    color: var(--text-color);
     margin: 0 0 1.25rem 0;
     font-weight: 500;
 }
@@ -336,7 +338,7 @@ body {
 }
 
 .suggestions p {
-    color: var(--text-dark);
+    color: var(--text-color);
     font-weight: 600;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
@@ -353,17 +355,17 @@ body {
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--ocean-blue);
+    color: var(--primary-color);
     cursor: pointer;
     border-radius: 8px;
-    background: var(--white);
+    background: var(--app-bg-color);
     transition: all 0.2s;
-    border: 1px solid #E2E8F0;
+    border: 1px solid var(--border-color);
 }
 
 .suggestions li:hover {
-    background: #F7FAFF;
-    border-color: var(--ocean-blue);
+    background: var(--message-bg-color);
+    border-color: var(--primary-color);
 }
 
 .input-container {
@@ -372,7 +374,7 @@ body {
     padding-bottom: 1rem;
     display: flex;
     flex-direction: column;
-    border-top: 1px solid #E2E8F0;
+    border-top: 1px solid var(--border-color);
 }
 
 .input-wrapper {
@@ -384,7 +386,7 @@ body {
     flex: 1;
     padding: 0.75rem 1rem;
     border-radius: 12px;
-    border: 1px solid #E2E8F0;
+    border: 1px solid var(--border-color);
     font-size: 0.9rem;
     font-family: 'Quicksand', sans-serif;
     resize: none;
@@ -393,20 +395,21 @@ body {
     overflow-y: auto;
     transition: all 0.2s;
     outline: none;
-    background-color: #F8FAFC;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
 }
 
 .input-wrapper textarea:focus {
-    border-color: var(--ocean-blue);
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(56, 178, 172, 0.2);
 }
 
 .input-wrapper textarea::placeholder {
-    color: var(--text-light);
+    color: var(--text-light-color);
 }
 
 .input-wrapper textarea:disabled {
-    background-color: #EDF2F7;
+    background-color: var(--disabled-bg-color);
     cursor: not-allowed;
     opacity: 0.7;
 }
@@ -415,7 +418,7 @@ body {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 12px;
-    background: var(--ocean-blue);
+    background: var(--primary-color);
     color: white;
     display: flex;
     align-items: center;
@@ -428,11 +431,11 @@ body {
 }
 
 .icon-button:hover {
-    background: #1f4c7e;
+    background: var(--primary-hover-color);
 }
 
 .icon-button:disabled {
-    background: #CBD5E0;
+    background: var(--border-color);
     cursor: not-allowed;
 }
 
@@ -490,5 +493,5 @@ body {
     margin-top: 0.75rem;
     text-align: center;
     font-size: 0.75rem;
-    color: var(--text-light);
+    color: var(--text-light-color);
 }

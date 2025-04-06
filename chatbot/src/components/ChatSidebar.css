@@ -1,7 +1,7 @@
 .chat-sidebar {
   width: 250px;
-  background-color: #f5f5f5;
-  border-right: 1px solid #e0e0e0;
+  background-color: var(--app-bg-color);
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -9,7 +9,7 @@
 
 .sidebar-header {
   padding: 15px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,7 +18,7 @@
 .sidebar-header h2 {
   margin: 0;
   font-size: 1.2rem;
-  color: #333;
+  color: var(--text-color);
 }
 
 .sidebar-actions {
@@ -28,7 +28,7 @@
 
 .new-chat-button,
 .close-sidebar-button {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 50%;
@@ -43,15 +43,15 @@
 }
 
 .new-chat-button:hover {
-  background-color: #388e3c;
+  background-color: var(--primary-hover-color);
 }
 
 .close-sidebar-button {
-  background-color: #f44336;
+  background-color: var(--error-red);
 }
 
 .close-sidebar-button:hover {
-  background-color: #d32f2f;
+  background-color: #c0392b;
 }
 
 .sessions-list {
@@ -64,7 +64,7 @@
 
 .session-item {
   padding: 12px 15px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -73,12 +73,12 @@
 }
 
 .session-item:hover {
-  background-color: #e8f5e9;
+  background-color: var(--message-bg-color);
 }
 
 .session-item.active {
-  background-color: #e8f5e9;
-  border-left: 4px solid #4caf50;
+  background-color: var(--message-bg-color);
+  border-left: 4px solid var(--primary-color);
 }
 
 .session-info {
@@ -92,11 +92,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text-color);
 }
 
 .session-date {
   font-size: 0.8rem;
-  color: #757575;
+  color: var(--text-light-color);
 }
 
 .session-actions {
@@ -108,7 +109,7 @@
 .delete-session-button {
   background: none;
   border: none;
-  color: #757575;
+  color: var(--text-light-color);
   cursor: pointer;
   padding: 5px;
   opacity: 0.6;
@@ -117,12 +118,12 @@
 
 .edit-session-button:hover {
   opacity: 1;
-  color: #2196f3;
+  color: var(--primary-color);
 }
 
 .delete-session-button:hover {
   opacity: 1;
-  color: #f44336;
+  color: var(--error-red);
 }
 
 .session-edit {
@@ -135,10 +136,12 @@
 .session-edit input {
   flex-grow: 1;
   padding: 6px 8px;
-  border: 1px solid #4caf50;
+  border: 1px solid var(--primary-color);
   border-radius: 4px;
   font-size: 0.9rem;
   margin-right: 8px;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
 }
 
 .edit-actions {
@@ -154,11 +157,11 @@
 }
 
 .edit-actions button:first-child {
-  color: #4caf50;
+  color: var(--success-green);
 }
 
 .edit-actions button:last-child {
-  color: #f44336;
+  color: var(--error-red);
 }
 
 .loading-sessions,
@@ -167,7 +170,7 @@
 .login-prompt {
   padding: 20px;
   text-align: center;
-  color: #757575;
+  color: var(--text-light-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -177,11 +180,11 @@
 }
 
 .login-prompt {
-  color: #757575;
+  color: var(--text-light-color);
 }
 
 .error-message {
-  color: #f44336;
+  color: var(--error-red);
 }
 
 @media (max-width: 768px) {
@@ -189,6 +192,6 @@
     width: 100%;
     height: auto;
     border-right: none;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border-color);
   }
 }
