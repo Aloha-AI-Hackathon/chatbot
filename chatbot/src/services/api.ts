@@ -20,8 +20,8 @@ export const sendMessage = async (message: string, sessionId: string | null = nu
       throw new Error('Message must be a non-empty string');
     }
     
-    // Properly handle session_id to avoid sending invalid values
-    let session_id = null;
+    // Always send empty string instead of null to avoid backend validation errors
+    let session_id = '';
     if (sessionId && sessionId !== 'null' && sessionId !== 'undefined' && sessionId !== 'string') {
       session_id = sessionId;
     }
@@ -55,7 +55,9 @@ export const sendMessage = async (message: string, sessionId: string | null = nu
       throw new Error(`API error: ${response.status} ${response.statusText}`);
     }
 
-    return await response.json();
+    const responseData = await response.json();
+    console.log('API response:', responseData);
+    return responseData;
   } catch (error) {
     console.error('Failed to send message to API:', error);
     throw error;
@@ -73,7 +75,9 @@ export const checkApiHealth = async (): Promise<{status: string; ai_service_init
       throw new Error(`Health check failed: ${response.status} ${response.statusText}`);
     }
     
-    return await response.json();
+    const healthData = await response.json();
+    console.log('API health check response:', healthData);
+    return healthData;
   } catch (error) {
     console.error('Health check failed:', error);
     throw error;
