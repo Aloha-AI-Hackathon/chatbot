@@ -1,9 +1,9 @@
 import logging
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
-from .ai_service import ai_service
 
 # Configure logging
 logging.basicConfig(
@@ -30,6 +30,28 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Fix module imports - try both absolute and relative
+try:
+    # Try relative import first
+    from .ai_service import ai_service
+    logger.info("Loaded AI service via relative import")
+except ImportError:
+    try:
+        # Fall back to absolute import
+        from app.ai_service import ai_service
+        logger.info("Loaded AI service via absolute import")
+    except ImportError:
+        logger.error("Could not import AI service module. This may cause issues.")
+        # Create a stub ai_service as fallback
+        class StubAIService:
+            def __init__(self):
+                self.initialized = False
+                
+            async def get_response(self, message, session_id=None):
+                return "", "Error: AI service not available. Check server configuration."
+                
+        ai_service = StubAIService()
 
 # Pydantic models
 class ChatRequest(BaseModel):
@@ -63,4 +85,14 @@ async def ask(request: ChatRequest):
 # Health check endpoint
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "ai_service_initialized": ai_service.initialized} 
+    return {
+        "status": "healthy", 
+        "ai_service_initialized": ai_service.initialized,
+        "environment": {
+            "project_id": os.getenv("PROJECT_ID", "Not set"),
+            "location": os.getenv("LOCATION", "Not set"),
+            # Don't include actual values or secrets, just status
+            "project_id_set": bool(os.getenv("PROJECT_ID")),
+            "location_set": bool(os.getenv("LOCATION")),
+        }
+    } 
