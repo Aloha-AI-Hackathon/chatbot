@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faRotateLeft, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { sendMessage, checkApiHealth } from '../services/api';
 import './Chat.css';
 
@@ -15,6 +15,7 @@ export const Chat: React.FC = () => {
     const [isThinking, setIsThinking] = useState(false);
     const [sessionId, setSessionId] = useState<string | null>(null);
     const [apiConnected, setApiConnected] = useState<boolean | null>(null);
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -33,14 +34,6 @@ export const Chat: React.FC = () => {
                 const health = await checkApiHealth();
                 setApiConnected(health.ai_service_initialized);
                 console.log('API health check:', health);
-                
-                // Add initial bot message if API is connected and no messages yet
-                if (health.ai_service_initialized && messages.length === 0) {
-                    setMessages([{
-                        text: "Aloha! I'm KiloKōkua, your AI guide to Hawaiʻi's climate. Ask me about weather patterns, climate data, or environmental changes across the islands.",
-                        isUser: false
-                    }]);
-                }
             } catch (error) {
                 console.error('API connection failed:', error);
                 setApiConnected(false);
@@ -67,6 +60,28 @@ export const Chat: React.FC = () => {
         
         return () => clearInterval(healthCheckInterval);
     }, [apiConnected]);
+
+    useEffect(() => {
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (prefersDark) {
+            setTheme('dark');
+        }
+    }, []);
+
+    useEffect(() => {
+        // Update theme in localStorage and document
+        localStorage.setItem('theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    };
 
     const handleSend = async () => {
         if (inputText.trim()) {
@@ -137,6 +152,10 @@ export const Chat: React.FC = () => {
     return (
         <div className="app-container">
             <div className="chat-container">
+                <button className="theme-toggle" onClick={toggleTheme}>
+                    <FontAwesomeIcon icon={theme === 'light' ? faMoon : faSun} />
+                </button>
+                
                 <div className="bot-avatar">
                     <img src={process.env.PUBLIC_URL + '/assets/hawaii-weather-logo.png'} alt="KiloKōkua Avatar" />
                 </div>
