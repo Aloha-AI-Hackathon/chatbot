@@ -225,24 +225,29 @@ export const Chat: React.FC = () => {
         setSidebarVisible(true);
     };
 
+    // Toggle sidebar for mobile view
+    const toggleMobileSidebar = () => {
+        setShowSidebar(prev => !prev);
+    };
+
     return (
         <div className="app-container">
             <div className={`chat-layout ${showSidebar ? 'show-sidebar' : ''}`}>
-                {!sidebarVisible && user && (
-                    <div className="sidebar-toggle" onClick={openSidebar}>
+                {user && (
+                    <div className="sidebar-toggle" onClick={openSidebar} style={{ display: sidebarVisible ? 'none' : 'flex' }}>
                         <FontAwesomeIcon icon={faBars} />
                     </div>
                 )}
                 
                 {user && (
-                    <div className={`sidebar-container ${showSidebar || sidebarVisible ? 'visible' : ''}`}>
+                    <div className={`sidebar-container ${(showSidebar || sidebarVisible) ? 'visible' : ''}`} style={{ display: sidebarVisible ? 'block' : 'none' }}>
                         <ChatSidebar 
                             onSelectSession={handleSelectSession}
                             onNewChat={handleNewChat}
                             currentSessionId={sessionId}
                             refreshTrigger={refreshTrigger}
                             onClose={closeSidebar}
-                            visible={true}
+                            visible={sidebarVisible}
                         />
                     </div>
                 )}
