@@ -4,11 +4,6 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import AppRouter from './AppRouter';
 
-// Add dark mode class to the body if user prefers it
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.documentElement.classList.add('dark');
-}
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

@@ -12,6 +12,7 @@
   display: flex;
   gap: 10px;
   z-index: 100;
+  align-items: center;
 }
 
 .auth-button {
@@ -23,10 +24,18 @@
   font-size: 14px;
   text-decoration: none;
   transition: background-color 0.2s;
+  cursor: pointer;
 }
 
 .auth-button:hover {
   background-color: #0e4957;
+}
+
+.user-greeting {
+  color: #145b6e;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 10px;
 }
 
 /* Dark mode support */
@@ -48,4 +57,4 @@
     padding: 4px 8px;
     font-size: 12px;
   }
-} 
+}

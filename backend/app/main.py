@@ -139,6 +139,28 @@ async def get_session(
     
     return session
 
+@app.patch("/sessions/{session_id}", response_model=chat.ChatSessionResponse)
+async def update_session(
+    session_id: str,
+    update_data: chat.ChatSessionUpdate,
+    current_user: Optional[User] = Depends(get_current_user_optional),
+    db: Session = Depends(get_db)
+):
+    """Update a chat session."""
+    session = chat.get_chat_session(db, session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Chat session not found")
+    
+    # Only allow updates if the session belongs to the user or has no user (anonymous)
+    if session.user_id and (not current_user or session.user_id != current_user.id):
+        raise HTTPException(status_code=403, detail="Not authorized to update this session")
+    
+    updated_session = chat.update_chat_session(db, session_id, update_data)
+    if not updated_session:
+        raise HTTPException(status_code=500, detail="Failed to update chat session")
+    
+    return updated_session
+
 @app.delete("/sessions/{session_id}")
 async def delete_session(
     session_id: str,
@@ -244,4 +266,4 @@ async def health_check():
             "project_id_set": bool(os.getenv("PROJECT_ID")),
             "location_set": bool(os.getenv("LOCATION")),
         }
-    } 
+    }
