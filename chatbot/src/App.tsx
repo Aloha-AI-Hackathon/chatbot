@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import InfoModal from './components/InfoModal';
+import { sendMessage, checkApiHealth } from './services/api';
 
 interface Message {
   id: number;
@@ -21,35 +22,101 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [apiConnected, setApiConnected] = useState<boolean | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
-  const handleSendMessage = (e: React.FormEvent) => {
+  // Function to check API connection
+  const checkApiConnection = async () => {
+    setApiConnected(null); // Set to connecting state
+    try {
+      const health = await checkApiHealth();
+      setApiConnected(health.ai_service_initialized);
+      console.log('API health check:', health);
+      return health.ai_service_initialized;
+    } catch (error) {
+      console.error('API connection failed:', error);
+      setApiConnected(false);
+      return false;
+    }
+  };
+
+  // Check if API is available on component mount
+  useEffect(() => {
+    checkApiConnection();
+    
+    // Set up periodic health checks
+    const healthCheckInterval = setInterval(() => {
+      if (apiConnected === false) {
+        console.log('Attempting to reconnect to API...');
+        checkApiConnection();
+      }
+    }, 30000); // Check every 30 seconds if disconnected
+    
+    return () => clearInterval(healthCheckInterval);
+  }, [apiConnected]);
+
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (inputText.trim() === '') return;
     
     // Add user message
-    const newMessage: Message = {
+    const userMessage: Message = {
       id: messages.length + 1,
       text: inputText,
       sender: 'user',
       timestamp: new Date()
     };
     
-    setMessages([...messages, newMessage]);
+    setMessages([...messages, userMessage]);
     setInputText('');
     setIsTyping(true);
     
-    // Simulate bot response (in a real app, this would be an API call)
-    setTimeout(() => {
-      const botResponse: Message = {
+    try {
+      // Send message to backend API
+      if (apiConnected) {
+        const response = await sendMessage(inputText, sessionId);
+        
+        // Store session ID for continued conversation
+        setSessionId(response.session_id);
+        
+        // Add bot response
+        const botResponse: Message = {
+          id: messages.length + 2,
+          text: response.reply,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        
+        setIsTyping(false);
+        setMessages(prev => [...prev, botResponse]);
+      } else {
+        // Fallback for when API is not connected
+        setTimeout(() => {
+          const fallbackResponse: Message = {
+            id: messages.length + 2,
+            text: "I'm currently unable to connect to my knowledge base. Please check your connection to the backend API.",
+            sender: 'bot',
+            timestamp: new Date()
+          };
+          setIsTyping(false);
+          setMessages(prev => [...prev, fallbackResponse]);
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      // Show error message
+      const errorMessage: Message = {
         id: messages.length + 2,
-        text: "Mahalo for your message about Hawaiʻi's climate! This is a simulated response. In the real application, I would provide specific climate data, trends, and forecasts for the Hawaiian Islands.",
+        text: "I'm sorry, I encountered an error processing your request. Please try again later.",
         sender: 'bot',
         timestamp: new Date()
       };
+      
       setIsTyping(false);
-      setMessages(prev => [...prev, botResponse]);
-    }, 1500);
+      setMessages(prev => [...prev, errorMessage]);
+    }
   };
 
   // Auto-scroll to newest message
@@ -181,6 +248,22 @@ function App() {
 
         {/* Input area */}
         <div className="sticky bottom-0 bg-white dark:bg-gray-800 rounded-xl shadow-md p-2 transition-colors duration-300">
+          {/* Session indicator */}
+          {sessionId && (
+            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center justify-between">
+              <span className="flex items-center">
+                <span className="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                Active session
+              </span>
+              <button 
+                onClick={() => setSessionId(null)} 
+                className="text-hawaii-teal hover:underline focus:outline-none"
+              >
+                Reset
+              </button>
+            </div>
+          )}
+          
           <form onSubmit={handleSendMessage} className="flex gap-2">
             <input
               type="text"
@@ -188,10 +271,11 @@ function App() {
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ask about Hawaiʻi's climate..."
               className="flex-1 p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-hawaii-teal dark:text-white transition-colors duration-300"
+              disabled={isTyping}
             />
             <button
               type="submit"
-              disabled={inputText.trim() === ''}
+              disabled={inputText.trim() === '' || isTyping}
               className="bg-hawaii-green hover:bg-hawaii-teal text-white px-4 py-2 rounded-lg transition-colors duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hawaii-teal disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="mr-1 hidden sm:inline">Send</span>
@@ -200,13 +284,48 @@ function App() {
               </svg>
             </button>
           </form>
+          
+          {/* API reconnection button */}
+          {apiConnected === false && (
+            <div className="mt-2 text-center">
+              <button
+                onClick={() => {
+                  checkApiConnection();
+                }}
+                className="text-sm text-hawaii-teal hover:underline focus:outline-none"
+              >
+                Retry connection to API
+              </button>
+            </div>
+          )}
         </div>
       </main>
 
       {/* Footer */}
       <footer className="py-3 px-4 text-center text-sm text-gray-600 dark:text-gray-400 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-colors duration-300">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto flex justify-between items-center">
           <p>© 2025 KiloKōkua - The Hawaiʻi Climate AI Concierge</p>
+          
+          {/* API Connection Status */}
+          <div className="flex items-center">
+            <span className="mr-2">API:</span>
+            {apiConnected === null ? (
+              <span className="text-yellow-500 flex items-center">
+                <span className="w-2 h-2 rounded-full bg-yellow-500 mr-1 animate-pulse"></span>
+                Connecting...
+              </span>
+            ) : apiConnected ? (
+              <span className="text-green-500 flex items-center">
+                <span className="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                Connected
+              </span>
+            ) : (
+              <span className="text-red-500 flex items-center">
+                <span className="w-2 h-2 rounded-full bg-red-500 mr-1"></span>
+                Disconnected
+              </span>
+            )}
+          </div>
         </div>
       </footer>
 
