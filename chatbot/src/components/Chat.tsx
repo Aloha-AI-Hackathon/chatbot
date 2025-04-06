@@ -370,7 +370,7 @@ export const Chat: React.FC = () => {
                             </div>
                         )}
                         <div className="powered-by">
-                            <span>Powered by AI</span>
+                            <span>"Our data comes from the National Science Foundation & Hawaii EPSCoR. Learn more: <a href="https://www.hawaii.edu/climate-data-portal/">Link to HCDP</a></span>
                         </div>
                     </div>
                 </div>
