@@ -257,7 +257,14 @@ export const Chat: React.FC = () => {
                         <ThemeToggle />
                     </div>
                     <div className="bot-avatar">
-                        <img src={process.env.PUBLIC_URL + '/assets/hawaii-weather-logo.png'} alt="KiloKōkua Avatar" />
+                        <img 
+                            src="/assets/hawaii-weather-logo.png" 
+                            alt="KiloKōkua Avatar"
+                            onError={(e) => {
+                                console.error('Error loading logo:', e);
+                                e.currentTarget.src = `${process.env.PUBLIC_URL}/assets/hawaii-weather-logo.png`;
+                            }}
+                        />
                     </div>
 
                     <div className="bot-name">

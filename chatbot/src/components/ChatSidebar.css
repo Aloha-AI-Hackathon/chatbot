@@ -89,18 +89,18 @@
 }
 
 .session-item {
-  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   transition: background-color 0.2s;
+  gap: 0.5rem;
 }
 
 @media (min-width: 576px) {
   .session-item {
-    padding: 12px 15px;
+    padding: 0.5rem 0.75rem;
   }
 }
 
@@ -110,52 +110,52 @@
 
 .session-item.active {
   background-color: var(--message-bg-color);
-  border-left: 4px solid var(--primary-color);
+  border-left: 3px solid var(--primary-color);
 }
 
 .session-info {
-  flex-grow: 1;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 1.5rem;
+  min-width: 0;
 }
 
 .session-title {
   font-weight: 500;
-  margin-bottom: 4px;
-  white-space: nowrap;
+  color: var(--text-color);
+  font-size: 0.9rem;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--text-color);
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
 }
 
 .session-date {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-light-color);
+  white-space: nowrap;
 }
 
 .session-actions {
   display: flex;
-  gap: 5px;
+  gap: 0.25rem;
+  margin-left: 0.25rem;
 }
 
-.edit-session-button,
-.delete-session-button {
+.session-actions button {
   background: none;
   border: none;
-  color: var(--text-light-color);
+  padding: 0.15rem;
   cursor: pointer;
-  padding: 5px;
-  opacity: 0.6;
-  transition: opacity 0.2s;
+  color: var(--text-light-color);
+  transition: color 0.2s;
 }
 
-.edit-session-button:hover {
-  opacity: 1;
+.session-actions button:hover {
   color: var(--primary-color);
-}
-
-.delete-session-button:hover {
-  opacity: 1;
-  color: var(--error-red);
 }
 
 .session-edit {
