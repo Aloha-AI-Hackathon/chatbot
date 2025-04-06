@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../AuthPages.css';
 import { login } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from '../components/ThemeToggle';
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -41,6 +42,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="auth-page">
+      <ThemeToggle />
       <div className="auth-container">
         <h2>Welcome Back</h2>
         {error && <div className="auth-error">{error}</div>}

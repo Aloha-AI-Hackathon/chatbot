@@ -178,4 +178,36 @@
 
 .dark .auth-back:hover {
   color: #E2E8F0;
-} 
+}
+
+/* Theme toggle button */
+.theme-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color, #2C5F9C);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.theme-button:hover {
+  background-color: var(--primary-hover-color, #254b7a);
+  transform: scale(1.05);
+}
+
+.dark .theme-button {
+  background-color: var(--primary-color, #4A90E2);
+}
+
+.dark .theme-button:hover {
+  background-color: var(--primary-hover-color, #3A7BC8);
+}
