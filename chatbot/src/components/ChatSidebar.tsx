@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrash, faComments, faPencilAlt, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faPencilAlt, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../context/AuthContext';
 import './ChatSidebar.css';
 
@@ -73,7 +73,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const handleDeleteSession = async (sessionId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     
-    if (!confirm('Are you sure you want to delete this chat?')) {
+  if (!window.confirm('Are you sure you want to delete this chat?')) {
       return;
     }
 

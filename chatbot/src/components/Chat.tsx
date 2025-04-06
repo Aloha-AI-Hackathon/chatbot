@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faRotateLeft, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faRotateLeft, faBars } from '@fortawesome/free-solid-svg-icons';
 import { sendMessage, checkApiHealth } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ChatSidebar from './ChatSidebar';
@@ -214,10 +214,6 @@ export const Chat: React.FC = () => {
         } catch (error) {
             setApiConnected(false);
         }
-    };
-
-    const toggleSidebar = () => {
-        setShowSidebar(!showSidebar);
     };
 
     const closeSidebar = () => {
