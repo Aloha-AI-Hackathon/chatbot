@@ -11,15 +11,13 @@ from sqlalchemy.orm import Session
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=getattr(logging, LOG_LEVEL),
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("kilokokua-backend")
 
-# Load environment variables
-load_dotenv()
-
-# Import database and models
+# Import configuration, database and models
+from .config import CORS_ORIGINS, LOG_LEVEL
 from .database import engine, get_db, Base
 from . import models, auth, chat
 from .auth import Token, User, UserCreate, get_current_user, get_current_user_optional, get_current_active_user
@@ -37,7 +35,7 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

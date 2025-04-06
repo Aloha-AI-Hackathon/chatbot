@@ -13,7 +13,12 @@ python-jose[cryptography]>=3.3.0,<4.0.0
 bcrypt>=4.0.1,<5.0.0
 email-validator>=2.0.0,<3.0.0
 
-# Optional database drivers (uncomment as needed)
-# psycopg2-binary>=2.9.7,<3.0.0  # For PostgreSQL
+# Database drivers
+psycopg2-binary>=2.9.7,<3.0.0  # For PostgreSQL
 # pymysql>=1.1.0,<2.0.0  # For MySQL
 # asyncpg>=0.28.0,<1.0.0  # For async PostgreSQL
+
+# Production dependencies
+gunicorn>=21.2.0,<22.0.0  # WSGI HTTP Server
+uvloop>=0.17.0,<1.0.0  # Fast event loop
+httptools>=0.6.0,<1.0.0  # Fast HTTP parsing

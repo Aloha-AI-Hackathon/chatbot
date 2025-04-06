@@ -1,14 +1,9 @@
-import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
-# Get database URL from environment or use SQLite as default
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./kilokokua.db")
+# Import configuration
+from .config import DATABASE_URL
 
 # Create SQLAlchemy engine
 engine = create_engine(
@@ -27,4 +22,4 @@ def get_db():
     try:
         yield db
     finally:
-        db.close() 
+        db.close()

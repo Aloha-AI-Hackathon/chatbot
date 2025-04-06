@@ -126,6 +126,22 @@ The backend provides the following API endpoints:
 - `POST /ask` - Send a message to the AI
 - `GET /health` - Check API health
 
+## Deployment
+
+For detailed deployment instructions to Google Cloud Platform, please refer to the [Deployment Guide](DEPLOYMENT.md).
+
+Quick deployment steps:
+
+1. Set up Google Cloud secrets:
+```bash
+./scripts/setup_gcp_secrets.sh
+```
+
+2. Deploy the application:
+```bash
+./scripts/deploy.sh
+```
+
 ## License
 
 This project is licensed under the MIT License.

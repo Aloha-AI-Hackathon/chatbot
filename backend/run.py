@@ -42,15 +42,38 @@ if __name__ == "__main__":
         logger.warning("Environment variables PROJECT_ID and/or LOCATION are not set")
         logger.warning("Vertex AI integration will not work without these variables")
     
-    # Start server
+    # Determine environment
+    env = os.getenv("ENV", "development")
+    logger.info(f"Running in {env.upper()} environment")
+    
+    # Start server with appropriate configuration
     try:
-        uvicorn.run(
-            app_path,
-            host="0.0.0.0",
-            port=port,
-            reload=True,  # Enable auto-reload for development
-            log_level=os.getenv("LOG_LEVEL", "info").lower(),
-        )
+        if env.lower() == "production":
+            # Production settings: no reload, optimized workers
+            logger.info("Using production server configuration")
+            uvicorn.run(
+                app_path,
+                host="0.0.0.0",
+                port=port,
+                reload=False,
+                workers=int(os.getenv("WORKERS", "4")),
+                log_level=os.getenv("LOG_LEVEL", "info").lower(),
+                proxy_headers=True,
+                forwarded_allow_ips="*",
+                # Use uvloop and httptools for better performance in production
+                loop="uvloop",
+                http="httptools",
+            )
+        else:
+            # Development settings: reload enabled, single worker
+            logger.info("Using development server configuration")
+            uvicorn.run(
+                app_path,
+                host="0.0.0.0",
+                port=port,
+                reload=True,
+                log_level=os.getenv("LOG_LEVEL", "info").lower(),
+            )
     except Exception as e:
         logger.error(f"Error starting server: {e}")
-        sys.exit(1) 
+        sys.exit(1)
