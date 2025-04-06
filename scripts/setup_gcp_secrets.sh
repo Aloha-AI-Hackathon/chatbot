@@ -58,8 +58,16 @@ create_secret() {
     
     # Create or update secret
     echo "Creating/updating secret: $name"
-    echo -n "$value" | gcloud secrets create $name --data-file=- --replication-policy="automatic" --project=$PROJECT_ID 2>/dev/null || \
-    echo -n "$value" | gcloud secrets versions add $name --data-file=- --project=$PROJECT_ID
+    if gcloud secrets describe $name --project=$PROJECT_ID &> /dev/null; then
+        # Secret exists, add a new version
+        echo "Secret exists, adding new version..."
+        echo -n "$value" | gcloud secrets versions add $name --data-file=- --project=$PROJECT_ID
+    else
+        # Secret doesn't exist, create it
+        echo "Secret doesn't exist, creating it..."
+        # Use a specific location instead of automatic replication to comply with org policy
+        echo -n "$value" | gcloud secrets create $name --data-file=- --location="us-central1"
+    fi
 }
 
 # Create necessary secrets

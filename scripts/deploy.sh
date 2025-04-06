@@ -63,7 +63,7 @@ required_secrets=("db-password" "jwt-secret" "db-host")
 missing_secrets=()
 
 for secret in "${required_secrets[@]}"; do
-    if ! gcloud secrets describe $secret --project=$PROJECT_ID &> /dev/null; then
+    if ! gcloud secrets describe $secret &> /dev/null; then
         missing_secrets+=($secret)
     fi
 done
@@ -79,27 +79,33 @@ fi
 
 # Check if Cloud SQL instance exists
 echo "Checking if Cloud SQL instance exists..."
-DB_HOST=$(gcloud secrets versions access latest --secret=db-host)
-DB_INSTANCE=$(echo $DB_HOST | cut -d':' -f3)
-
-if ! gcloud sql instances describe $DB_INSTANCE &> /dev/null; then
-    echo "Cloud SQL instance '$DB_INSTANCE' does not exist."
-    read -p "Would you like to create it now? (y/n): " create_db
-    if [[ $create_db == "y" ]]; then
-        echo "Creating Cloud SQL instance..."
-        gcloud sql instances create $DB_INSTANCE \
-            --database-version=POSTGRES_13 \
-            --tier=db-f1-micro \
-            --region=us-central1 \
-            --root-password="$(gcloud secrets versions access latest --secret=db-password)" \
-            --storage-size=10GB
-        
-        echo "Creating database..."
-        gcloud sql databases create kilokokua --instance=$DB_INSTANCE
-    else
-        echo "Please create the Cloud SQL instance manually and try again."
-        exit 1
+DB_HOST=""
+if gcloud secrets describe db-host &> /dev/null; then
+    DB_HOST=$(gcloud secrets versions access latest --secret=db-host)
+    DB_INSTANCE=$(echo $DB_HOST | cut -d':' -f3)
+    
+    if ! gcloud sql instances describe $DB_INSTANCE &> /dev/null; then
+        echo "Cloud SQL instance '$DB_INSTANCE' does not exist."
+        read -p "Would you like to create it now? (y/n): " create_db
+        if [[ $create_db == "y" ]]; then
+            echo "Creating Cloud SQL instance..."
+            gcloud sql instances create $DB_INSTANCE \
+                --database-version=POSTGRES_13 \
+                --tier=db-f1-micro \
+                --region=us-central1 \
+                --root-password="$(gcloud secrets versions access latest --secret=db-password)" \
+                --storage-size=10GB
+            
+            echo "Creating database..."
+            gcloud sql databases create kilokokua --instance=$DB_INSTANCE
+        else
+            echo "Please create the Cloud SQL instance manually and try again."
+            exit 1
+        fi
     fi
+else
+    echo "DB_HOST secret not found. Please run setup_gcp_secrets.sh first."
+    exit 1
 fi
 
 # Deploy using Cloud Build
@@ -110,15 +116,13 @@ gcloud builds submit --config=cloudbuild.yaml
 echo "Deployment started. Waiting for completion..."
 sleep 10
 
-# Get service URLs
-echo "Fetching service URLs..."
-BACKEND_URL=$(gcloud run services describe kilokokua-backend --format="value(status.url)")
-FRONTEND_URL=$(gcloud run services describe kilokokua-frontend --format="value(status.url)")
+# Get service URL
+echo "Fetching service URL..."
+APP_URL=$(gcloud run services describe kilokokua-app --format="value(status.url)")
 
 echo "Deployment completed!"
-echo "Backend URL: $BACKEND_URL"
-echo "Frontend URL: $FRONTEND_URL"
+echo "Application URL: $APP_URL"
 echo ""
-echo "You can access the application at: $FRONTEND_URL"
+echo "You can access the application at: $APP_URL"
 echo ""
 echo "For more information and post-deployment steps, refer to the DEPLOYMENT.md guide."

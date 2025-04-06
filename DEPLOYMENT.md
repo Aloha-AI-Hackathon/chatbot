@@ -90,36 +90,70 @@ gcloud sql databases create kilokokua \
 
 ### 5. Set Up Secret Manager for Environment Variables
 
+The project includes a helper script to set up the required secrets in Google Cloud Secret Manager:
+
+```bash
+# Run the setup script
+./scripts/setup_gcp_secrets.sh
+```
+
+This script will:
+1. Check if you're logged in to gcloud
+2. Enable the Secret Manager API if needed
+3. Create the following secrets with secure default values:
+   - `db-password`: Password for the PostgreSQL database
+   - `jwt-secret`: Secret key for JWT token generation
+   - `db-host`: Connection string for the Cloud SQL instance
+
+If you prefer to set up the secrets manually:
+
 ```bash
 # Create secrets for sensitive configuration
-echo -n "STRONG_PASSWORD_HERE" | gcloud secrets create db-password --data-file=-
-echo -n "your-google-cloud-project-id" | gcloud secrets create project-id --data-file=-
-echo -n "us-central1" | gcloud secrets create location --data-file=-
+gcloud secrets create db-password --location="us-central1"
+echo -n "YOUR_STRONG_PASSWORD" | gcloud secrets versions add db-password --data-file=-
+
+gcloud secrets create jwt-secret --location="us-central1"
+echo -n "YOUR_JWT_SECRET_KEY" | gcloud secrets versions add jwt-secret --data-file=-
+
+gcloud secrets create db-host --location="us-central1"
+echo -n "YOUR_PROJECT_ID:us-central1:kilokokua-db" | gcloud secrets versions add db-host --data-file=-
 ```
+
+> **Important**: When creating secrets, do not specify the `--project` flag explicitly, as it may cause formatting issues with the project ID. The gcloud command will use your currently active project.
+
+> **Note**: We use `--location="us-central1"` instead of `--replication-policy="automatic"` to comply with organization policies that may restrict where secrets can be stored. If your organization allows different regions, you may need to adjust this location.
+
+> **Note**: Make sure to create these secrets before running the deployment, as they are required by the Cloud Build configuration.
 
 ## Application Configuration
 
-### 1. Update Frontend API Configuration
+### 1. Combined Dockerfile
 
-You need to modify the API base URL in the frontend to point to your Cloud Run backend service.
+The project now uses a single Dockerfile in the root directory that combines both frontend and backend into a single container. This simplifies deployment and ensures that the frontend and backend are always in sync.
 
-Edit `chatbot/src/services/api.ts`:
+The Dockerfile:
+- Builds the React frontend
+- Builds the Python backend
+- Sets up Nginx to serve the frontend static files
+- Configures Nginx to proxy API requests to the backend
+- Runs both services in a single container
+
+### 2. Frontend API Configuration
+
+The frontend is configured to use a relative path for API requests:
 
 ```typescript
-// Change this line:
-const API_BASE_URL = 'http://localhost:8000';
-
-// To:
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://kilokokua-backend-[hash].run.app';
+// In chatbot/src/services/api.ts:
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 ```
 
-Create a `.env.production` file in the `chatbot` directory:
+With the `.env.production` file setting:
 
 ```
-REACT_APP_API_URL=https://kilokokua-backend-[hash].run.app
+REACT_APP_API_URL=/api
 ```
 
-Note: Replace `[hash]` with the actual URL after your first deployment.
+This ensures that API requests are correctly proxied to the backend service running in the same container.
 
 ### 2. Update Backend Database Configuration
 
@@ -226,9 +260,9 @@ gcloud builds submit --config=cloudbuild.yaml
 ### 1. Set Up Custom Domain (Optional)
 
 ```bash
-# Map your domain to the frontend service
+# Map your domain to the application service
 gcloud run domain-mappings create \
-  --service=kilokokua-frontend \
+  --service=kilokokua-app \
   --domain=your-domain.com
 ```
 
@@ -242,7 +276,7 @@ Cloud Run automatically provisions SSL certificates for custom domains.
 # Create a scheduler job for database backups
 gcloud scheduler jobs create http db-backup \
   --schedule="0 0 * * *" \
-  --uri="https://kilokokua-backend-[hash].run.app/admin/backup" \
+  --uri="https://kilokokua-app-[hash].run.app/api/admin/backup" \
   --http-method=POST \
   --headers="Authorization=Bearer YOUR_SECRET_TOKEN"
 ```
@@ -252,11 +286,8 @@ gcloud scheduler jobs create http db-backup \
 ### 1. Set Up Logging and Monitoring
 
 ```bash
-# View logs for the backend service
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=kilokokua-backend"
-
-# View logs for the frontend service
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=kilokokua-frontend"
+# View logs for the application service
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=kilokokua-app"
 ```
 
 ### 2. Set Up Alerts (Optional)
