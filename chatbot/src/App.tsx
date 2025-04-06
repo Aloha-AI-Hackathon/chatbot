@@ -16,9 +16,6 @@ function App() {
 
   return (
     <div className="App">
-      <div className="theme-toggle">
-        <ThemeToggle />
-      </div>
       <div className="auth-buttons">
         {user ? (
           <>

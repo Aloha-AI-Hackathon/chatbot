@@ -4,6 +4,7 @@ import { faPaperPlane, faRotateLeft, faBars } from '@fortawesome/free-solid-svg-
 import { sendMessage, checkApiHealth } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ChatSidebar from './ChatSidebar';
+import ThemeToggle from './ThemeToggle';
 import './Chat.css';
 
 interface Message {
@@ -247,6 +248,9 @@ export const Chat: React.FC = () => {
                 )}
                 
                 <div className="chat-container">
+                    <div className="chat-theme-toggle">
+                        <ThemeToggle />
+                    </div>
                     <div className="bot-avatar">
                         <img src={process.env.PUBLIC_URL + '/assets/hawaii-weather-logo.png'} alt="KiloKōkua Avatar" />
                     </div>
