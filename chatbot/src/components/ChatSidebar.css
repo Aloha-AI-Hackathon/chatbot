@@ -1,15 +1,28 @@
 .chat-sidebar {
-  width: 250px;
+  width: 100%;
   background-color: var(--app-bg-color);
-  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   height: 100%;
   border-radius: 24px;
 }
 
+@media (max-width: 767px) {
+  .chat-sidebar {
+    border-radius: 24px;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 768px) {
+  .chat-sidebar {
+    width: 250px;
+    border-right: 1px solid var(--border-color);
+  }
+}
+
 .sidebar-header {
-  padding: 15px;
+  padding: 12px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
@@ -18,8 +31,18 @@
 
 .sidebar-header h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--text-color);
+}
+
+@media (min-width: 576px) {
+  .sidebar-header {
+    padding: 15px;
+  }
+  
+  .sidebar-header h2 {
+    font-size: 1.2rem;
+  }
 }
 
 .sidebar-actions {
@@ -33,14 +56,23 @@
   color: white;
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 0.9rem;
+  width: 28px;
+  height: 28px;
+  font-size: 0.8rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s;
+}
+
+@media (min-width: 576px) {
+  .new-chat-button,
+  .close-sidebar-button {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
 }
 
 .new-chat-button:hover,
@@ -57,13 +89,19 @@
 }
 
 .session-item {
-  padding: 12px 15px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.2s;
+}
+
+@media (min-width: 576px) {
+  .session-item {
+    padding: 12px 15px;
+  }
 }
 
 .session-item:hover {
@@ -184,8 +222,6 @@
 @media (max-width: 768px) {
   .chat-sidebar {
     width: 100%;
-    height: auto;
     border-right: none;
-    border-bottom: 1px solid var(--border-color);
   }
 }
